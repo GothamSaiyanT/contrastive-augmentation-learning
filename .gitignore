@@ -1,0 +1,21 @@
+# Virtual environment
+.venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Dataset
+data/
+
+# Trained models
+checkpoints/
+*.pt
+*.pth
+
+# Generated results
+results/
+
+# Editor files
+.vscode/
+.idea/
