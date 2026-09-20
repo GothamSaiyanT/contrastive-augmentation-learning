@@ -76,18 +76,18 @@ class SimCLRTrainer:
                 loss =f"{loss.item():.4f}"
             )
 
-            average_loss = (
-                total_loss/total_images
-            )
+        average_loss = (
+            total_loss/total_images
+        )
 
-            history.append({
-                "epoch":epoch,
-                "loss":average_loss
-            })
+        history.append({
+            "epoch":epoch,
+            "loss":average_loss
+        })
 
-            print(
-                f"Epoch {epoch}:"
-                f"average loss = {average_loss:.4f}"
-            )
+        print(
+            f"Epoch {epoch}:"
+            f"average loss = {average_loss:.4f}"
+        )
 
-            return history
+        return history
