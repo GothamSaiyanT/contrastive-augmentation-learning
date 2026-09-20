@@ -69,6 +69,24 @@ class Experiment:
             epochs=self.pretrain_epochs
         )
 
+        # Save the trained model
+        torch.save(
+            self.model.state_dict(),
+            "checkpoints/"
+            + self.augmentation_name
+            + "_model.pt"
+        )
+
+        loss_results = pd.DataFrame(
+            training_history
+        )
+
+        loss_results.to_csv(
+            "results/"
+            + self.augmentation_name
+            + "_training_loss.csv",
+            index=False
+        )
         # STEP 3:
         # Prepare CIFAR-10 for classification
         train_loader, test_loader = (
