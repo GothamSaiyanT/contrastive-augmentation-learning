@@ -1,6 +1,6 @@
 import torch
 import pandas as pd
-
+import os
 from .data import CIFAR10Data
 from .model import SimCLRModel
 from .trainer import SimCLRTrainer
@@ -40,6 +40,8 @@ class Experiment:
 
 
     def run(self):
+        os.makedirs("results", exist_ok=True)
+        os.makedirs("checkpoints", exist_ok=True)
 
         print("=" * 50)
         print("Starting experiment")

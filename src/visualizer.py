@@ -1,7 +1,7 @@
 import torch
 import numpy as np
 import matplotlib.pyplot as plt
-
+import os
 from sklearn.decomposition import PCA
 from sklearn.manifold import TSNE
 
@@ -133,6 +133,14 @@ class TSNEVisualizer:
         )
 
         plt.tight_layout()
+
+        output_directory = os.path.dirname(output_file)
+
+        if output_directory:
+            os.makedirs(
+                output_directory,
+                exist_ok=True
+            )
 
         plt.savefig(
             output_file
