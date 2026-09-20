@@ -10,7 +10,7 @@ def main():
     )
 
     parser.add_argument(
-        "augmentation",
+        "--augmentation",
         required=True,
         choices=[
             "none",
@@ -22,19 +22,19 @@ def main():
     )
 
     parser.add_argument(
-        "pretrain-epochs",
+        "--pretrain-epochs",
         type=int,
         default=10
     )
 
     parser.add_argument(
-        "evaluation-epochs",
+        "--evaluation-epochs",
         type=int,
         default=5
     )
 
     parser.add_argument(
-        "batch-size",
+        "--batch-size",
         type=int,
         default=128
     )
