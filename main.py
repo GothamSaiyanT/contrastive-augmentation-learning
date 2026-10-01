@@ -39,6 +39,11 @@ def main():
         default=128
     )
 
+    parser.add_argument(
+        "--seed",
+        type=int,
+        default=42
+    )
     args = parser.parse_args()
 
     experiment = Experiment(
@@ -46,6 +51,7 @@ def main():
         pretrain_epochs=args.pretrain_epochs,
         evaluation_epochs=args.evaluation_epochs,
         batch_size=args.batch_size
+        seed=args.seed
     )
 
     experiment.run()

@@ -1,4 +1,6 @@
 import torch
+import random
+import numpy as np
 import pandas as pd
 import os
 from .data import CIFAR10Data
@@ -15,14 +17,18 @@ class Experiment:
         augmentation_name,
         pretrain_epochs=10,
         evaluation_epochs=5,
-        batch_size=128
+        batch_size=128,
+        seed=42
     ):
         self.augmentation_name = augmentation_name
         self.pretrain_epochs = pretrain_epochs
         self.evaluation_epochs = evaluation_epochs
         self.batch_size = batch_size
+        self.seed = seed
 
         self.device = self.get_device()
+
+        self.set_seed()
 
         self.data = CIFAR10Data(
             batch_size=self.batch_size
@@ -40,6 +46,13 @@ class Experiment:
 
 
     def run(self):
+
+
+        run_name = (
+            self.augmentation_name
+            + "_seed"
+            + str(self.seed)
+        )
         os.makedirs("results", exist_ok=True)
         os.makedirs("checkpoints", exist_ok=True)
 
@@ -72,8 +85,7 @@ class Experiment:
         # Save the trained model
         torch.save(
             self.model.state_dict(),
-            "checkpoints/"
-            + self.augmentation_name
+            "checkpoints/" +run_name
             + "_model.pt"
         )
 
@@ -83,7 +95,7 @@ class Experiment:
 
         loss_results.to_csv(
             "results/"
-            + self.augmentation_name
+            + run_name
             + "_training_loss.csv",
             index=False
         )
@@ -121,7 +133,7 @@ class Experiment:
             data_loader=test_loader,
             output_file=(
                 "results/"
-                + self.augmentation_name
+                + run_name
                 + "_tsne.png"
             ),
             maximum_samples=1000
@@ -132,6 +144,7 @@ class Experiment:
         results = pd.DataFrame([
             {
                 "augmentation": self.augmentation_name,
+                "seed":self.seed,
                 "accuracy": accuracy,
                 "pretrain_epochs": self.pretrain_epochs,
                 "evaluation_epochs": self.evaluation_epochs
@@ -146,6 +159,9 @@ class Experiment:
         )
 
         print()
+        print("Augmentation:", self.augmentation_name)
+        print("Seed:", self.seed)
+        print("Device:", self.device)
         print("Experiment finished.")
         print(
             "Final accuracy:",
@@ -154,3 +170,16 @@ class Experiment:
         )
 
         return accuracy
+
+
+    def set_seed(self):
+
+        random.seed(self.seed)
+        np.random.seed(self.seed)
+        torch.manual_seed(self.seed)
+
+        if torch.cuda.is_available():
+            torch.cuda.manual_seed_all(self.seed)
+
+        torch.backends.cudnn.deterministic = True
+        torch.backends.cudnn.benchmark = False
