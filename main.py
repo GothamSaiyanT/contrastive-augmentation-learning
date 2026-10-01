@@ -50,7 +50,7 @@ def main():
         augmentation_name=args.augmentation,
         pretrain_epochs=args.pretrain_epochs,
         evaluation_epochs=args.evaluation_epochs,
-        batch_size=args.batch_size
+        batch_size=args.batch_size,
         seed=args.seed
     )
 
