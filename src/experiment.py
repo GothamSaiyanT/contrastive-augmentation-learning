@@ -153,7 +153,7 @@ class Experiment:
 
         results.to_csv(
             "results/"
-            + self.augmentation_name
+            + run_name
             + "_results.csv",
             index=False
         )
