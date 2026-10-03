@@ -58,7 +58,8 @@ class LinearEvaluator:
 
                 optimizer.step()
 
-    def test(self,test_loader):
+    def test(self, test_loader):
+
         self.encoder.eval()
         self.classifier.eval()
 
@@ -67,24 +68,30 @@ class LinearEvaluator:
 
         with torch.no_grad():
 
-            for images,labels in test_loader:
+            for images, labels in tqdm(
+                test_loader,
+                desc="Testing"
+            ):
+
                 images = images.to(self.device)
                 labels = labels.to(self.device)
 
                 features = self.encoder(images)
 
-                predictions = self.classifier(
-                    features
-                )
+                predictions = self.classifier(features)
+
                 predicted_classes = predictions.argmax(
-                    dim = 1
+                    dim=1
                 )
 
-                correct +=(
+                correct += (
                     predicted_classes == labels
                 ).sum().item()
 
                 total += labels.size(0)
-                accuracy = correct / total
 
-                return accuracy
+        # IMPORTANT:
+        # these must be outside the loop
+        accuracy = correct / total
+
+        return accuracy
